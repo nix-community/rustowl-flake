@@ -1,11 +1,12 @@
 {
+  pkgs,
   lib,
-  fetchFromGitHub,
-  fenix,
-  rust-manifest,
+  rustowl-src,
   makeRustPlatform,
 }: let
-  toolchain = (fenix.fromManifestFile rust-manifest).completeToolchain;
+  toolchain = pkgs.rust-bin.fromRustupToolchainFile "${rustowl-src}/rustowl/rust-toolchain.toml";
+  toolchainTOML = lib.importTOML "${rustowl-src}/rustowl/rust-toolchain.toml";
+  cargoTOML = lib.importTOML "${rustowl-src}/rustowl/Cargo.toml";
   rustPlatform = makeRustPlatform {
     cargo = toolchain;
     rustc = toolchain;
@@ -13,27 +14,22 @@
 in
   rustPlatform.buildRustPackage rec {
     pname = "rustowl";
-    version = "0.1.4";
+    version = "${cargoTOML.package.version}-unstable";
 
-    src = fetchFromGitHub {
-      owner = "cordx56";
-      repo = "rustowl";
-      rev = "v${version}";
-      sparseCheckout = ["rustowl"];
-      hash = "sha256-f8TV99ftbgBVwFtTDP8mvJWa2upcDt3r8LkLqkjbTgg=";
-    };
+    src = rustowl-src;
 
-    sourceRoot = "${src.name}/rustowl";
+    sourceRoot = "source/rustowl";
 
-    cargoDeps = rustPlatform.fetchCargoVendor {
-      inherit src sourceRoot;
-      allowGitDependencies = false;
-      hash = "sha256-Ovj3/CO2tkdVWELu2cPpb85+obO1CMv0A3AYL6PbvRw=";
+    cargoDeps = rustPlatform.importCargoLock {
+      lockFile = "${src}/rustowl/Cargo.lock";
     };
 
     nativeBuildInputs = [
       toolchain
     ];
+
+    RUSTOWL_TOOLCHAIN = toolchainTOML.toolchain.channel;
+    RUSTOWL_TOOLCHAIN_DIR = "${toolchain}";
 
     meta = with lib; {
       description = "Visualize ownership and lifetimes in Rust for debugging and optimization";

@@ -14,14 +14,11 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    fenix = {
-      url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    rust-manifest = {
-      url = "https://static.rust-lang.org/dist/2025-02-22/channel-rust-nightly.toml";
+    rustowl = {
+      url = "github:cordx56/rustowl";
       flake = false;
     };
+    rust-overlay.url = "github:oxalica/rust-overlay";
     flake-parts.url = "github:hercules-ci/flake-parts";
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
@@ -51,10 +48,10 @@
           };
         };
       in {
-        # use fenix overlay
+        # use rust-overlay
         _module.args.pkgs = import nixpkgs {
           inherit system;
-          overlays = [inputs.fenix.overlays.default];
+          overlays = [(import inputs.rust-overlay)];
         };
 
         packages = with pkgs; {
