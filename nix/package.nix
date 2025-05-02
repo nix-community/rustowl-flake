@@ -32,7 +32,7 @@ in
     ];
 
     RUSTOWL_TOOLCHAIN = toolchainTOML.toolchain.channel;
-    RUSTOWL_TOOLCHAIN_DIR = "${toolchain}";
+    RUSTOWL_SYSROOTS = "${toolchain}";
 
     meta = with lib; {
       description = "Visualize ownership and lifetimes in Rust for debugging and optimization";
