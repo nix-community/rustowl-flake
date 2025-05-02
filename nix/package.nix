@@ -22,13 +22,13 @@ in
       lockFile = "${src}/Cargo.lock";
     };
 
-    nativeBuildInputs = [
+    nativeBuildInputs = with pkgs; [
       toolchain
-      pkgs.pkg-config
+      pkg-config
     ];
 
-    buildInputs = [
-      pkgs.openssl
+    buildInputs = with pkgs; [
+      openssl
     ];
 
     RUSTOWL_TOOLCHAIN = toolchainTOML.toolchain.channel;

@@ -13,7 +13,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     rustowl = {
-      url = "github:cordx56/rustowl?ref=v0.3.0";
+      url = "github:cordx56/rustowl";
       flake = false;
     };
     rust-overlay.url = "github:oxalica/rust-overlay";
