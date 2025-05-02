@@ -4,9 +4,9 @@
   rustowl-src,
   makeRustPlatform,
 }: let
-  toolchain = pkgs.rust-bin.fromRustupToolchainFile "${rustowl-src}/rustowl/rust-toolchain.toml";
-  toolchainTOML = lib.importTOML "${rustowl-src}/rustowl/rust-toolchain.toml";
-  cargoTOML = lib.importTOML "${rustowl-src}/rustowl/Cargo.toml";
+  toolchain = pkgs.rust-bin.fromRustupToolchainFile "${rustowl-src}/rust-toolchain.toml";
+  toolchainTOML = lib.importTOML "${rustowl-src}/rust-toolchain.toml";
+  cargoTOML = lib.importTOML "${rustowl-src}/Cargo.toml";
   rustPlatform = makeRustPlatform {
     cargo = toolchain;
     rustc = toolchain;
@@ -18,18 +18,21 @@ in
 
     src = rustowl-src;
 
-    sourceRoot = "source/rustowl";
-
     cargoDeps = rustPlatform.importCargoLock {
-      lockFile = "${src}/rustowl/Cargo.lock";
+      lockFile = "${src}/Cargo.lock";
     };
 
-    nativeBuildInputs = [
+    nativeBuildInputs = with pkgs; [
       toolchain
+      pkg-config
+    ];
+
+    buildInputs = with pkgs; [
+      openssl
     ];
 
     RUSTOWL_TOOLCHAIN = toolchainTOML.toolchain.channel;
-    RUSTOWL_TOOLCHAIN_DIR = "${toolchain}";
+    RUSTOWL_SYSROOTS = "${toolchain}";
 
     meta = with lib; {
       description = "Visualize ownership and lifetimes in Rust for debugging and optimization";
