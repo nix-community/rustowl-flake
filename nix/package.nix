@@ -33,6 +33,7 @@ in
 
     RUSTOWL_TOOLCHAIN = toolchainTOML.toolchain.channel;
     RUSTOWL_SYSROOTS = "${toolchain}";
+    RUSTUP_TOOLCHAIN = "${toolchain.version}";
 
     meta = with lib; {
       description = "Visualize ownership and lifetimes in Rust for debugging and optimization";
