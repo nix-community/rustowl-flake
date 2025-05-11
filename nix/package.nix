@@ -27,9 +27,13 @@ in
       pkg-config
     ];
 
-    buildInputs = with pkgs; [
-      openssl
-    ];
+    buildInputs = with pkgs;
+      [
+        openssl
+      ]
+      ++ lib.optionals stdenv.isDarwin [
+        zlib
+      ];
 
     RUSTOWL_TOOLCHAIN = toolchainTOML.toolchain.channel;
     RUSTOWL_SYSROOTS = "${toolchain}";
