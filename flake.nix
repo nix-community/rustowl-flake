@@ -49,7 +49,7 @@
         # use rust-overlay
         _module.args.pkgs = import nixpkgs {
           inherit system;
-          overlays = [(import inputs.rust-overlay)];
+          overlays = [self.overlays.default];
         };
 
         packages = with pkgs; {
@@ -63,8 +63,7 @@
         devShells.default = pkgs.mkShell {
           name = "rustowl-flake devShell";
           inherit (git-hooks-check) shellHook;
-          buildInputs =
-            self.checks.${system}.git-hooks-check.enabledPackages;
+          buildInputs = self.checks.${system}.git-hooks-check.enabledPackages;
         };
 
         checks = rec {
@@ -75,7 +74,14 @@
         };
       };
       flake = {
-        overlays.default = import ./nix/overlay.nix {inherit self inputs;};
+        overlays = rec {
+          default = rustowl-with-rust-overlay;
+          rustowl = import ./nix/overlay.nix {inherit self inputs;};
+          rustowl-with-rust-overlay = nixpkgs.lib.composeManyExtensions [
+            (import inputs.rust-overlay)
+            self.overlays.rustowl
+          ];
+        };
       };
     };
 }
