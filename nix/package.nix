@@ -27,6 +27,11 @@ in
       pkg-config
     ];
 
+    preCheck = ''
+      # This test is impure
+      rm tests/algorithm.rs
+    '';
+
     buildInputs = with pkgs;
       [
         openssl
