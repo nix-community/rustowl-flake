@@ -43,7 +43,11 @@ in
     RUSTOWL_TOOLCHAIN = toolchainTOML.toolchain.channel;
     RUSTOWL_SYSROOTS = "${toolchain}";
     RUSTUP_TOOLCHAIN = "${toolchain.version}";
-
+    postInstall = ''
+      install -Dm755 \
+        $out/bin/rustowlc \
+        $out/bin/sysroot/${RUSTOWL_TOOLCHAIN}/bin/rustowlc
+    '';
     meta = with lib; {
       description = "Visualize ownership and lifetimes in Rust for debugging and optimization";
       longDescription = ''
