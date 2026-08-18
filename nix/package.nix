@@ -48,6 +48,10 @@ in
         $out/bin/rustowlc \
         $out/bin/sysroot/${RUSTOWL_TOOLCHAIN}/bin/rustowlc
     '';
+    postFixup = ''
+      # prevent rustowl from falling back to a downloaded toolchain
+      ln -sfn ${RUSTOWL_SYSROOTS} $out/bin/sysroot/${RUSTUP_TOOLCHAIN}
+    '';
     meta = with lib; {
       description = "Visualize ownership and lifetimes in Rust for debugging and optimization";
       longDescription = ''
