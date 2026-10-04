@@ -29,7 +29,7 @@ in
 
     preCheck = ''
       # This test is impure
-      rm tests/algorithm.rs
+      rm crates/rustowl/tests/algorithm.rs
     '';
 
     buildInputs = with pkgs;
