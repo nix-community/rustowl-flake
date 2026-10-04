@@ -14,7 +14,7 @@
 in
   rustPlatform.buildRustPackage rec {
     pname = "rustowl";
-    version = "${cargoTOML.package.version}-unstable";
+    version = "${cargoTOML.workspace.package.version}-unstable";
 
     src = rustowl-src;
 
@@ -29,7 +29,7 @@ in
 
     preCheck = ''
       # This test is impure
-      rm tests/algorithm.rs
+      rm crates/rustowl/tests/algorithm.rs
     '';
 
     buildInputs = with pkgs;
