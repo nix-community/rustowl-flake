@@ -14,7 +14,7 @@
 in
   rustPlatform.buildRustPackage rec {
     pname = "rustowl";
-    version = "${cargoTOML.package.version}-unstable";
+    version = "${cargoTOML.workspace.package.version}-unstable";
 
     src = rustowl-src;
 
