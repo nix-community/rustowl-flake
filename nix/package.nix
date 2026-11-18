@@ -34,7 +34,9 @@ in
 
     buildInputs = with pkgs;
       [
+        aws-lc
         openssl
+        rust-jemalloc-sys-unprefixed
       ]
       ++ lib.optionals stdenv.hostPlatform.isDarwin [
         zlib
